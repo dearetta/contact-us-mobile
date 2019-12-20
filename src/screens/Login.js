@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import colors from '../containers/style/colorprofile';
 import InputField from '../components/form/InputField';
+import Notification from '../components/Notification'
 import NextArrowButton from '../components/buttons/NextButton';
 import firebase from 'react-native-firebase';
 
@@ -41,9 +42,9 @@ export default class Login extends Component {
       .catch(error => console.log(error));
   }
   
-  // Login = () => {
-
-  // };
+  handleCloseNotification = () => {
+    alert("close Notification")
+  }
   render() {
     return (
       <KeyboardAvoidingView style={styles.wrapper} behavior="padding">
@@ -72,6 +73,9 @@ export default class Login extends Component {
             />
           </ScrollView>
           <NextArrowButton handleLogin={this.Login.bind(this)} />
+        </View>
+        <View>
+          <Notification handleCloseNotification={this.handleCloseNotification} title="Error" message="Something went wrong"/>
         </View>
       </KeyboardAvoidingView>
     );
