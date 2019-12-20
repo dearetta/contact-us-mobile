@@ -5,43 +5,74 @@ import {
   Text,
   View,
   KeyboardAvoidingView,
-  SafeAreaView,
-  TouchableWithoutFeedback
 } from 'react-native';
 import colors from '../containers/style/colorprofile';
 import InputField from '../components/form/InputField';
 import NextArrowButton from '../components/buttons/NextButton';
+import firebase from 'react-native-firebase';
 
 export default class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      user: null,
+      email: '',
+      password: '',
+      formValid: true,
+      error: '',
+      loadingVisible: false,
+    };
+  }
+  handleEmailChange = email => {
+    this.setState({email: email});
+  };
+  handlePasswordChange = password => {
+    this.setState({password: password});
+  };
+  Login() {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.state.email ,this.state.password)
+      .then(user => {
+        this.setState({user});
+        console.log(user);
+      })
+      .catch(error => console.log(error));
+  }
+  
+  // Login = () => {
+
+  // };
   render() {
     return (
-      <KeyboardAvoidingView
-        style={styles.wrapper}
-        behavior={Platform.OS === 'ios' ? 'padding' : null}>  
-            <View style={styles.scrollViewWrapper}>
-              <ScrollView style={styles.avoidView}>
-                <Text style={styles.loginHeader}>Login</Text>
-                <InputField
-                  labelText="Email"
-                  labelTextSize={14}
-                  labelColor={colors.white}
-                  textColor={colors.white}
-                  borderBottomColor={colors.white}
-                  inputType="email"
-                  customStyle={{marginBottom: 30}}
-                />
-                <InputField
-                  labelText="Password"
-                  labelTextSize={14}
-                  labelColor={colors.white}
-                  textColor={colors.white}
-                  borderBottomColor={colors.white}
-                  inputType="password"
-                  customStyle={{marginBottom: 30}}
-                />
-              </ScrollView>
-              <NextArrowButton />
-            </View> 
+      <KeyboardAvoidingView style={styles.wrapper} behavior="padding">
+        <View style={styles.scrollViewWrapper}>
+          <ScrollView style={styles.avoidView}>
+            <Text style={styles.loginHeader}>Login</Text>
+            <InputField
+              labelText="EMAIL ADDRESS"
+              onChangeText={this.handleEmailChange}
+              labelTextSize={14}
+              labelColor={colors.white}
+              textColor={colors.white}
+              borderBottomColor={colors.white}
+              inputType="email"
+              customStyle={{marginBottom: 30}}
+            />
+            <InputField
+              labelText="PASSWORD"
+              onChangeText={this.handlePasswordChange}
+              labelTextSize={14}
+              labelColor={colors.white}
+              textColor={colors.white}
+              borderBottomColor={colors.white}
+              inputType="password"
+              customStyle={{marginBottom: 30}}
+            />
+          </ScrollView>
+          <NextArrowButton handleLogin={this.Login.bind(this)} />
+        </View>
       </KeyboardAvoidingView>
     );
   }

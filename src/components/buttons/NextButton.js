@@ -6,9 +6,11 @@ import colors from '../../containers/style/colorprofile';
 
 export default class NextArrowButton extends Component {
   render() {
+    const {disabled, handleLogin} = this.props
     return (
       <View style={styles.buttonWrapper}>
-        <TouchableHighlight style={[{opacity: 0.5}, styles.button]}>
+        <TouchableHighlight style={[{opacity: 0.5}, styles.button]}
+        onPress={handleLogin}>
           <Icon
             name="angle-right"
             color={colors.red}
@@ -22,8 +24,8 @@ export default class NextArrowButton extends Component {
 }
 
 NextArrowButton.propTypes = {
-    disabled: PropTypes.bool,
-    handleNextButton: PropTypes.func
+    disabled: propTypes.bool,
+    handleLogin: propTypes.func
 }
 
 const styles = StyleSheet.create({
